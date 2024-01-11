@@ -1,11 +1,7 @@
 "use client";
 
-import { useConvexAuth } from "convex/react";
 import { Footer } from "./_components/footer";
-import { Heading } from "./_components/heading";
-import { Heroes } from "./_components/heroes";
 import { Songs } from "./_components/songs";
-import { Spinner } from "@/components/spinner";
 
 const MarketingPage = () => {
   return (

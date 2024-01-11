@@ -17,8 +17,7 @@ import {
 
 import { toast } from "sonner";
 import { Edit, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 export const Songs = () => {
   const songs = useQuery(api.songs.getSongs, {});
