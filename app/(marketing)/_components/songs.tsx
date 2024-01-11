@@ -40,15 +40,10 @@ export const Songs = () => {
     });
   };
 
-  useEffect(() => {}, [songs]);
-
-  console.log(songs?.[0]?._id, currentSong?._id, currentSong?.process);
-
   if (
     songs &&
     songs.length !== 0 &&
-    currentSong &&
-    songs[0]._id !== currentSong._id
+    ((currentSong && songs[0]._id !== currentSong._id) || !currentSong)
   ) {
     setCurrentSong(songs[0]);
   }
@@ -66,10 +61,10 @@ export const Songs = () => {
   return (
     <div className="mt-4 w-full">
       <iframe
-        // className="hidden"
+        className="hidden"
         width="560"
         height="315"
-        src={`${currentSong?.url}?&amp;start=${currentSong?.process}&amp;autoplay=1&amp;v=${currentSong?._id}`}
+        src={`${currentSong?.url}?start=${currentSong?.process}&autoplay=1&v=${currentSong?._id}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       ></iframe>
       <Table>
