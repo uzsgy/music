@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-type SearchStore = {
+type AddSong = {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
   toggle: () => void;
 };
 
-export const useSearch = create<SearchStore>((set, get) => ({
+export const useAddSong = create<AddSong>((set, get) => ({
   isOpen: false,
   onOpen: () => set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
