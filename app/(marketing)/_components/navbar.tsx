@@ -29,11 +29,18 @@ export const Navbar = () => {
     return hours * 3600 + minutes * 60 + seconds;
   };
 
+  const extractVideoIdFromUrl = (url: string) => {
+    const regex = /[?&]v=([^?&]+)/;
+    const match = url.match(regex);
+    return match && match[1] ? match[1] : null;
+  };
+
   const onCreate = async () => {
     if (!urlRef?.current || !urlRef.current.value) return;
     try {
+      const videoId = extractVideoIdFromUrl(urlRef.current.value);
       const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${urlRef.current.value}&key=AIzaSyAoNwBgrexewOZlueo0ub4aneTzRaomrT0`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${videoId}&key=AIzaSyAoNwBgrexewOZlueo0ub4aneTzRaomrT0`
       );
 
       if (!response.ok) {
@@ -46,7 +53,7 @@ export const Navbar = () => {
         const duration = data.items[0].contentDetails.duration;
         const promise = create({
           title,
-          url: `https://www.youtube.com/embed/${urlRef.current.value}`,
+          url: `https://www.youtube.com/embed/${videoId}`,
           duration: convertDurationToSeconds(duration),
         }).then(() => {
           if (!urlRef?.current) return;
