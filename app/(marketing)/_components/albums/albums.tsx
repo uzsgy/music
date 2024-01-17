@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { api } from "@/convex/_generated/api";
-import {  useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
@@ -50,7 +50,7 @@ export const Albums = () => {
         {!albumFiltered.length ? (
           <div className="text-center">No album found.</div>
         ) : (
-          albumFiltered.map((album) => <Album album={album} />)
+          albumFiltered.map((album) => <Album album={album} key={album._id} />)
         )}
       </div>
     </div>
