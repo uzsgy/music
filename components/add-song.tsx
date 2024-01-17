@@ -66,7 +66,7 @@ export const AddSong = () => {
     } catch (error) {
       console.error("Error fetching YouTube video information:", error);
     }
-  }, [urlRef, create, toast, extractVideoIdFromUrl, convertDurationToSeconds]);
+  }, [urlRef, create, extractVideoIdFromUrl, convertDurationToSeconds]);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
