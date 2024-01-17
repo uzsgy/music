@@ -1,7 +1,7 @@
 "use client";
 
 import { Footer } from "./_components/footer";
-import { Songs } from "./_components/songs";
+import { Songs } from "./_components/songs/songs";
 
 const MarketingPage = () => {
   return (

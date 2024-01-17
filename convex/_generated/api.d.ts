@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as albums from "../albums";
 import type * as songs from "../songs";
 
 /**
@@ -25,6 +26,7 @@ import type * as songs from "../songs";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  albums: typeof albums;
   songs: typeof songs;
 }>;
 export declare const api: FilterApi<

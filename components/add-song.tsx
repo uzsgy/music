@@ -1,72 +1,93 @@
-"use client";
+import { useCallback, useRef } from "react";
+import { useMutation } from "convex/react";
 
-import { useEffect, useState } from "react";
-import { useQuery } from "convex/react";
-import { useRouter } from "next/navigation";
-
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { useAddSong } from "@/hooks/use-add-song";
 import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
-export const SearchCommand = () => {
-  const router = useRouter();
-  const songs = useQuery(api.songs.getSongs);
-  const [isMounted, setIsMounted] = useState(false);
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
 
-  const toggle = useAddSong((store) => store.toggle);
-  const isOpen = useAddSong((store) => store.isOpen);
-  const onClose = useAddSong((store) => store.onClose);
+export const AddSong = () => {
+  const urlRef = useRef<HTMLInputElement>(null);
+  const create = useMutation(api.songs.create);
 
-  useEffect(() => {
-    setIsMounted(true);
+  const convertDurationToSeconds = useCallback((duration: string) => {
+    const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/)!;
+
+    const hours = parseInt(match[1], 10) || 0;
+    const minutes = parseInt(match[2], 10) || 0;
+    const seconds = parseInt(match[3], 10) || 0;
+
+    return hours * 3600 + minutes * 60 + seconds;
   }, []);
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        toggle();
+  const extractVideoIdFromUrl = useCallback((url: string) => {
+    const regex = /[?&]v=([^?&]+)/;
+    const match = url.match(regex);
+    return match && match[1] ? match[1] : null;
+  }, []);
+
+  const onCreate = useCallback(async () => {
+    if (!urlRef?.current || !urlRef.current.value) return;
+    try {
+      const videoId = extractVideoIdFromUrl(urlRef.current.value);
+      if(!videoId) return;
+
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=${videoId}&key=AIzaSyAoNwBgrexewOZlueo0ub4aneTzRaomrT0`
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-    };
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, [toggle]);
+      const data = await response.json();
+      if (data.items.length > 0) {
+        const title = data.items[0].snippet.title;
+        const duration = data.items[0].contentDetails.duration;
+        const promise = create({
+          title,
+          objectId: videoId,
+          duration: convertDurationToSeconds(duration),
+        }).then(() => {
+          if (!urlRef?.current) return;
+          urlRef.current.value = "";
+        });
 
-  const onSelect = (id: string) => {
-    router.push(`/songs/${id}`);
-    onClose();
-  };
+        toast.promise(promise, {
+          loading: "Queue a new song...",
+          success: "New song queued!",
+          error: "Failed to queue a new song.",
+        });
+      } else {
+        toast.error("Video not found");
+      }
+    } catch (error) {
+      console.error("Error fetching YouTube video information:", error);
+    }
+  }, [urlRef, create, toast, extractVideoIdFromUrl, convertDurationToSeconds]);
 
-  if (!isMounted) {
-    return null;
-  }
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter") {
+        onCreate();
+      }
+    },
+    [onCreate]
+  );
 
   return (
-    <CommandDialog open={isOpen} onOpenChange={onClose}>
-      <CommandInput placeholder={`Add song to J...`} />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="songs">
-          {songs?.map((song) => (
-            <CommandItem
-              key={song._id}
-              value={`${song._id}-${song.url}`}
-              title={song.url}
-              onSelect={() => onSelect(song._id)}
-            >
-              <span>{song.url}</span>
-            </CommandItem>
-          ))}
-        </CommandGroup>
-      </CommandList>
-    </CommandDialog>
+    <div className="flex items-center">
+      <Input
+        ref={urlRef}
+        onKeyDown={onKeyDown}
+        placeholder="Paste Youtube link or Spotify link to add a new song."
+        className="h-10 px-2 focus-visible:ring-transparent rounded-tr-none rounded-br-none"
+      />
+      <Button onClick={onCreate} className="rounded-tl-none rounded-bl-none">
+        <PlusCircle className="h-4 w-4" />
+      </Button>
+    </div>
   );
 };
