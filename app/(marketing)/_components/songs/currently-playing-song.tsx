@@ -17,6 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { AddToAlbum } from "./add-to-album";
 import { Button } from "@/components/ui/button";
+import { PasswordModal } from "@/components/modals/password-modal";
 
 interface ArchiveProps {
   songs: Doc<"songs">[];
@@ -27,6 +28,7 @@ export const CurrentlyPlayingSong: React.FC<ArchiveProps> = ({ songs }) => {
   const archive = useMutation(api.songs.archive);
   const update = useMutation(api.songs.update);
   const updateTime = useMutation(api.songs.updateTime);
+  const [password, setPassword] = useState('');
 
   const [currentSong, setCurrentSong] = useState<Doc<"songs"> | null>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -94,6 +96,8 @@ export const CurrentlyPlayingSong: React.FC<ArchiveProps> = ({ songs }) => {
     return () => clearInterval(timeInterval);
   }, [songs, isPaused]);
 
+  if (password !== 'changxd') return <PasswordModal password={password} setPassword={setPassword} />;
+
   return (
     <div className="mt-4 w-full">
       <div className="text-left mb-10 font-bold flex items-center gap-2">
@@ -112,9 +116,8 @@ export const CurrentlyPlayingSong: React.FC<ArchiveProps> = ({ songs }) => {
         className="hidden"
         width="560"
         height="315"
-        src={`${`https://www.youtube.com/embed/${currentSong?.objectId}`}?start=${process}&autoplay=1&v=${
-          currentSong?._id
-        }`}
+        src={`${`https://www.youtube.com/embed/${currentSong?.objectId}`}?start=${process}&autoplay=1&v=${currentSong?._id
+          }`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       ></iframe>
       <Table>

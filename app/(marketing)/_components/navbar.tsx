@@ -15,8 +15,8 @@ export const Navbar = () => {
   return (
     <div
       className={cn(
-        "z-50 bg-background dark:bg-[#1F1F1F] fixed top-0 flex items-center w-full px-6 py-3",
-        scrolled && "border-b shadow-sm"
+        "z-50 bg-background/10 dark:bg-[#1F1F1F]/10 fixed top-0 flex items-center w-full px-6 py-3",
+        scrolled && "border-b shadow-sm border-background/20 dark:border-[#1F1F1F]/20"
       )}
     >
       <Logo />

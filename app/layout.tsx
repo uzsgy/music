@@ -12,19 +12,19 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Luvit',
+  title: 'Chang',
   description: 'The connected workspace where better, faster work happens.',
   icons: {
     icon: [
       {
         media: "(prefers-color-scheme: light)",
-        url: "/logo.svg",
-        href: "/logo.svg",
+        url: "/favicon.png",
+        href: "/favicon.png",
       },
       {
         media: "(prefers-color-scheme: dark)",
-        url: "/logo-dark.svg",
-        href: "/logo-dark.svg",
+        url: "/favicon.png",
+        href: "/favicon.png",
       }
     ]
   }
