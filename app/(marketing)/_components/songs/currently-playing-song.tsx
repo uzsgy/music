@@ -96,7 +96,7 @@ export const CurrentlyPlayingSong: React.FC<ArchiveProps> = ({ songs }) => {
     return () => clearInterval(timeInterval);
   }, [songs, isPaused]);
 
-  if (password !== 'changxd') return <PasswordModal password={password} setPassword={setPassword} />;
+  if (password !== 'jd3t2') return <PasswordModal password={password} setPassword={setPassword} />;
 
   return (
     <div className="mt-4 w-full">

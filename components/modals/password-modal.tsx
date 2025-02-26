@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 
 export const PasswordModal = ({ password, setPassword }: any) => {
   return (
-    <Dialog open={password !== 'changxd'}>
+    <Dialog open={password !== 'jd3t2'}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Password pls -_-</DialogTitle>
