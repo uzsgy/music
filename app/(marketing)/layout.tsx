@@ -8,7 +8,7 @@ const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((prev) => (prev + 1) % 3), 3000);
+    const t = setInterval(() => setIdx((prev) => (prev + 1) % 3), 30000);
     return () => clearInterval(t);
   }, []);
 
