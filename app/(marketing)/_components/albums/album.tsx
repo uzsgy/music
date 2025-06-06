@@ -56,7 +56,9 @@ const ListSong = ({ album }: AlbumProps) => {
           className="flex justify-between items-center font-mono text-sm"
           key={song._id}
         >
-          {idx + 1}. {song.title}
+          <div>
+            {idx + 1}. {song.title}
+          </div>
           <div className="flex items-center gap-2">
             <AddSongButton song={song} />
             <Button

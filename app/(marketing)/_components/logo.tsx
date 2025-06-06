@@ -10,6 +10,7 @@ export const Logo = () => {
           width="60"
           alt="Logo"
           objectFit="cover"
+          className={"grayscale"}
         />
       </div>
     </div>
