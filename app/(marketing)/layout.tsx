@@ -15,7 +15,7 @@ const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className={`min-h-full bg-cover bg-center`}
-      style={{ backgroundImage: "url('/x1.jpeg');" }}
+      style={{ backgroundImage: `url('/x${idx + 1}.jpeg');` }}
     >
       <Navbar />
       <main className="h-full pt-40">{children}</main>
