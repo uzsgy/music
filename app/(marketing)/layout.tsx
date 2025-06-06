@@ -1,19 +1,25 @@
+"use client";
+
 import Image from "next/image";
 import { Navbar } from "./_components/navbar";
+import { useEffect, useState } from "react";
 
-const MarketingLayout = ({
-  children
-}: {
-  children: React.ReactNode;
-}) => {
+const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((prev) => (prev + 1) % 3), 30000);
+    return () => clearInterval(t);
+  }, []);
+
   return (
-    <div className="min-h-full bg-[url('/x.jpeg')] bg-cover bg-center">
+    <div
+      className={`min-h-full bg-[url('/x${idx + 1}.jpeg')] bg-cover bg-center`}
+    >
       <Navbar />
-      <main className="h-full pt-40">
-        {children}
-      </main>
+      <main className="h-full pt-40">{children}</main>
     </div>
   );
-}
+};
 
 export default MarketingLayout;
