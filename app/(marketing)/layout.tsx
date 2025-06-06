@@ -8,14 +8,14 @@ const MarketingLayout = ({ children }: { children: React.ReactNode }) => {
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const t = setInterval(() => setIdx((prev) => (prev + 1) % 3), 30000);
+    const t = setInterval(() => setIdx((prev) => (prev + 1) % 3), 3000);
     return () => clearInterval(t);
   }, []);
 
   return (
     <div
       className={`min-h-full bg-cover bg-center`}
-      style={{ backgroundImage: `url('/x${idx + 1}.jpeg');` }}
+      style={{ backgroundImage: `url('/x${idx + 1}.jpeg')` }}
     >
       <Navbar />
       <main className="h-full pt-40">{children}</main>
